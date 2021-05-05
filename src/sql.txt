@@ -1,0 +1,193 @@
+use jwd;
+create table if not exists user
+(
+    id       int primary key auto_increment,
+    login    varchar(50) not null unique,
+    password varchar(50) not null
+);
+create table if not exists user_information
+(
+    user_id       int primary key,
+    name          varchar(50) not null,
+    email         varchar(50),
+    phone         varchar(50),
+    date_of_birth date,
+    foreign key (user_id) references user (id)
+);
+create table if not exists trainer_status
+(
+    id     int primary key not null auto_increment,
+    status varchar(50) unique
+);
+create table if not exists trainer
+(
+    id                int primary key,
+    user_id           int,
+    trainer_status_id int,
+    foreign key (user_id) references user (id),
+    foreign key (trainer_status_id) references trainer_status (id)
+);
+create table if not exists client_status
+(
+    id       int primary key not null auto_increment,
+    status   varchar(50) unique,
+    discount int
+);
+create table if not exists client
+(
+    id               int primary key,
+    user_id          int,
+    client_status_id int,
+    trainer_id       int,
+    capacity         varchar(50),
+    regime           varchar(50),
+    foreign key (user_id) references user (id),
+    foreign key (trainer_id) references trainer (id),
+    foreign key (client_status_id) references client_status (id)
+);
+create table if not exists item
+(
+    id          int primary key auto_increment,
+    client_id   int,
+    trainer_id  int,
+    price       int,
+    start_date  date,
+    end_date    date,
+    exercises   varchar(200),
+    equipment   varchar(200),
+    meals       varchar(200),
+    is_approved boolean,
+    foreign key (trainer_id) references trainer (id),
+    foreign key (client_id) references client (id)
+);
+create table if not exists feedback
+(
+    id         int primary key not null auto_increment,
+    trainer_id int,
+    client_id  int,
+    massage    varchar(200)    not null,
+    date       date,
+    foreign key (trainer_id) references trainer (id),
+    foreign key (client_id) references client (id)
+);
+create table if not exists credit_card
+(
+    id        int primary key not null auto_increment,
+    client_id int,
+    name      varchar(200),
+    number    int,
+    month     int,
+    year      int,
+    cvv       int,
+    foreign key (client_id) references client (id)
+)
+insert into client(id, user_id, client_status_id, trainer_id, capacity, regime)
+values (1, 1, 1, 1, 'active', 'regular');
+insert into client(id, user_id, client_status_id, trainer_id, capacity, regime)
+values (2, 2, 2, 2, 'poor', 'simple');
+insert into client(id, user_id, client_status_id, trainer_id, capacity, regime)
+values (3, 3, 3, 3, 'active', 'regular');
+insert into client(id, user_id, client_status_id, trainer_id, capacity, regime)
+values (4, 4, 1, 3, 'medium', 'regular');
+insert into client(id, user_id, client_status_id, trainer_id, capacity, regime)
+values (5, 5, 2, 1, 'light', 'slow');
+insert into client(id, user_id, client_status_id, trainer_id, capacity, regime)
+values (6, 6, 3, 2, 'poor', 'sport');
+
+insert into client_status(id, status, discount)
+values (1, 'beginner', 0);
+insert into client_status(id, status, discount)
+values (2, 'corporate', 10);
+insert into client_status(id, status, discount)
+values (3, 'regular', 15);
+
+insert into user(id, login, password)
+values (1, 'tanya', 1111);
+insert into user(id, login, password)
+values (2, 'lena', 2222);
+insert into user(id, login, password)
+values (3, 'sveta', 3333);
+insert into user(id, login, password)
+values (4, 'olya', 4444);
+insert into user(id, login, password)
+values (5, 'petya', 5555);
+insert into user(id, login, password)
+values (6, 'lesha', 6666);
+insert into user(id, login, password)
+values (7, 'vera', 7777);
+insert into user(id, login, password)
+values (8, 'sasha', 8888);
+insert into user(id, login, password)
+values (9, 'kolya', 9999);
+
+insert into user_information(user_id, name, email, phone, date_of_birth)
+values (1, 'tanya', 'tanya@mail.ru', 123456789, 11111023);
+insert into user_information(user_id, name, email, phone, date_of_birth)
+values (2, 'lena', 'lena@mail.ru', 123456789, 14351113);
+insert into user_information(user_id, name, email, phone, date_of_birth)
+values (3, 'sveta', 'sveta@mail.ru', 123456789, 11111023);
+insert into user_information(user_id, name, email, phone, date_of_birth)
+values (4, 'olya', 'olya@mail.ru', 123456789, 11111023);
+insert into user_information(user_id, name, email, phone, date_of_birth)
+values (5, 'petya', 'petya@mail.ru', 123456789, 14611023);
+insert into user_information(user_id, name, email, phone, date_of_birth)
+values (6, 'lesha', 'lesha@mail.ru', 123456789, 11111023);
+insert into user_information(user_id, name, email, phone, date_of_birth)
+values (7, 'vera', 'vera@mail.ru', 123456789, 15611023);
+insert into user_information(user_id, name, email, phone, date_of_birth)
+values (8, 'sasha', 'sasha@mail.ru', 123456789, 13411023);
+insert into user_information(user_id, name, email, phone, date_of_birth)
+values (9, 'kolya', 'kolya@mail.ru', 123456789, 11111023);
+
+insert into trainer_status(id, status)
+values (1, 'private');
+insert into trainer_status(id, status)
+values (2, 'group');
+insert into trainer_status(id, status)
+values (3, 'chief');
+
+insert into trainer(id, user_id, trainer_status_id)
+values (1, 7, 1);
+insert into trainer(id, user_id, trainer_status_id)
+values (2, 8, 2);
+insert into trainer(id, user_id, trainer_status_id)
+values (3, 9, 3);
+
+insert into item(id, client_id, trainer_id, price, start_date, end_date, exercises, equipment, meals, is_approved)
+values (1, 1, 1, 20, 11111023, 11221112, 'fitness', 'bike', 'vegetarianism', 1);
+insert into item(id, client_id, trainer_id, price, start_date, end_date, exercises, equipment, meals, is_approved)
+values (2, 2, 2, 30, 11111023, 11221112, 'aerobic exercise', 'rowing machine', 'raw food diet', 1);
+insert into item(id, client_id, trainer_id, price, start_date, end_date, exercises, equipment, meals, is_approved)
+values (3, 3, 3, 40, 11111023, 11221112, 'charging', 'treadmill', 'fat-free diet', 1);
+insert into item(id, client_id, trainer_id, price, start_date, end_date, exercises, equipment, meals, is_approved)
+values (4, 4, 1, 20, 11111023, 11221112, 'strength training', 'treadmill', 'a carb-free diet', 1);
+insert into item(id, client_id, trainer_id, price, start_date, end_date, exercises, equipment, meals, is_approved)
+values (5, 5, 2, 30, 11111023, 11221112, 'aerobics', 'rowing machine', 'no diet', 1);
+insert into item(id, client_id, trainer_id, price, start_date, end_date, exercises, equipment, meals, is_approved)
+values (6, 6, 3, 40, 11111023, 11221112, 'stretching', 'bike', 'without meat', 1);
+insert into item(id, client_id, trainer_id, price, start_date, end_date, exercises, equipment, meals, is_approved)
+values (7, 1, 1, 50, 11221112, 12230912, 'pilates', 'elliptical trainer', 'vegetarianism', 0);
+insert into item(id, client_id, trainer_id, price, start_date, end_date, exercises, equipment, meals, is_approved)
+values (8, 2, 2, 60, 11221112, 12341112, 'aerobics', 'bike', 'raw food diet', 0);
+
+insert into feedback (id, trainer_id, client_id, massage, date)
+values (1, 1, 1, 'qqqq', 11221112);
+insert into feedback (id, trainer_id, client_id, massage, date)
+values (2, 2, 2, 'wwwww', 11221112);
+insert into feedback (id, trainer_id, client_id, massage, date)
+values (3, 3, 3, 'fffff', 11221112);
+insert into feedback (id, trainer_id, client_id, massage, date)
+values (4, 1, 4, 'hhhhh', 11221112);
+
+insert into credit_card(id, client_id, name, number, month, year, cvv)
+values (1, 1, 'tanya', 1111, 02, 12, 123);
+insert into credit_card(id, client_id, name, number, month, year, cvv)
+values (2, 2, 'lena', 1111, 02, 12, 123);
+insert into credit_card(id, client_id, name, number, month, year, cvv)
+values (3, 3, 'sveta', 1111, 02, 12, 123);
+insert into credit_card(id, client_id, name, number, month, year, cvv)
+values (4, 1, 'olya', 1111, 02, 12, 123);
+insert into credit_card(id, client_id, name, number, month, year, cvv)
+values (5, 1, 'petya', 1111, 02, 12, 123);
+insert into credit_card(id, client_id, name, number, month, year, cvv)
+values (6, 1, 'lesha', 1111, 02, 12, 123);
