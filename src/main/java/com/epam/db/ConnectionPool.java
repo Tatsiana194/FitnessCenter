@@ -6,7 +6,7 @@ import com.epam.logger.JwdLogger;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
@@ -14,22 +14,23 @@ import java.util.logging.Logger;
 
 public class ConnectionPool {
     private ApplicationProperties applicationProperties = ApplicationProperties.getInstance();
-    private String dburl = applicationProperties.getDbUrl();
-    private String dbUser = applicationProperties.getDbUser();
-    private String dbPassword = applicationProperties.getDbPassword();
-    private int dbInitPoolSize = applicationProperties.getDbInitPoolSize();
-    private int dbMaxPoolSize = applicationProperties.getDbMaxPoolSize();
+    private String url = applicationProperties.getUrl();
+    private String db = applicationProperties.getDb();
+    private String user = applicationProperties.getUser();
+    private String password = applicationProperties.getPassword();
+    private int initPoolSize = applicationProperties.getInitPoolSize();
+    private int maxPoolSize = applicationProperties.getMaxPoolSize();
     private static Logger logger = new JwdLogger(ConnectionPool.class.getName(), "slf4j");
-    int numberOfConnection = 0;
+    private int numberOfConnection = 0;
 
-    private List<Connection> availableConnection = new CopyOnWriteArrayList<>();
+    private List<Connection> availableConnection = new ArrayList<>();
 
     public void init() {
-        for (int i = 0; i < dbInitPoolSize; i++) {
-            try (Connection connection = new ConnectionProxy(DriverManager.getConnection(dburl, dbUser, dbPassword))) {
+        for (int i = 0; i < initPoolSize; i++) {
+            try (Connection connection = new ConnectionProxy(DriverManager.getConnection(url + db, user, password))) {
                 availableConnection.add(connection);
             } catch (SQLException exception) {
-  //              logger.log(Level.WARNING, exception.getSQLState());
+                logger.log(Level.WARNING, exception.getSQLState());
             }
         }
     }

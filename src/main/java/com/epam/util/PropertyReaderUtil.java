@@ -19,13 +19,13 @@ public class PropertyReaderUtil {
         return instance;
     }
 
-    public Properties getProperties() {
-        loadProperties();
+    public Properties getProperties(String propertiesFileName) {
+        loadProperties(propertiesFileName);
         return properties;
     }
 
-    public static void loadProperties() {
-        final String propertiesFileName = "src/main/resources/application.properties";
+    public static void loadProperties(String propertiesFileName) {
+      //  final String propertiesFileName = "src/main/resources/application.properties";
         try (InputStream inputStream = new FileInputStream(propertiesFileName)) {
             properties.load(inputStream);
         } catch (IOException e) {
