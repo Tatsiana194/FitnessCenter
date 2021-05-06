@@ -1,12 +1,17 @@
 package com.epam.entity;
 
-public class Client extends BaseEntity {
+import java.io.Serializable;
+
+public class Client extends BaseEntity implements Serializable {
     private int userId;
     private int trainerId;
-    private String status;
+    private ClientStatus status;
     private int discount;
     private String capacity;
     private String regime;
+
+    private Client() {
+    }
 
     private Client(Builder builder) {
         userId = builder.userId;
@@ -17,14 +22,38 @@ public class Client extends BaseEntity {
         regime = builder.regime;
     }
 
-    public static Builder newBuilder() {
+    public Builder newBuilder() {
         return new Builder();
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public int getTrainerId() {
+        return trainerId;
+    }
+
+    public ClientStatus getStatus() {
+        return status;
+    }
+
+    public int getDiscount() {
+        return discount;
+    }
+
+    public String getCapacity() {
+        return capacity;
+    }
+
+    public String getRegime() {
+        return regime;
     }
 
     public static final class Builder {
         private int userId;
         private int trainerId;
-        private String status;
+        private ClientStatus status;
         private int discount;
         private String capacity;
         private String regime;
@@ -39,7 +68,7 @@ public class Client extends BaseEntity {
             return this;
         }
 
-        public Builder status(String val) {
+        public Builder status(ClientStatus val) {
             status = val;
             return this;
         }
@@ -58,5 +87,21 @@ public class Client extends BaseEntity {
             regime = val;
             return this;
         }
+
+        public Client build() {
+            return new Client(this);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Client{" +
+                "userId=" + userId +
+                ", trainerId=" + trainerId +
+                ", status='" + status + '\'' +
+                ", discount=" + discount +
+                ", capacity='" + capacity + '\'' +
+                ", regime='" + regime + '\'' +
+                '}';
     }
 }

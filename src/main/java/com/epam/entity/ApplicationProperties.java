@@ -5,13 +5,15 @@ import com.epam.util.PropertyReaderUtil;
 import java.util.Properties;
 
 public class ApplicationProperties {
-    private String dbUrl;
-    private String dbUser;
-    private String dbPassword;
-    private int dbInitPoolSize;
-    private int dbMaxPoolSize;
+    private String url;
+    private String db;
+    private String user;
+    private String password;
+    private int initPoolSize;
+    private int maxPoolSize;
     private PropertyReaderUtil propertyReaderUtil = PropertyReaderUtil.getInstance();
-    private Properties properties = propertyReaderUtil.getProperties();
+    private String fileName = "src/main/resources/application.properties";
+    private Properties properties = propertyReaderUtil.getProperties(fileName);
     private static ApplicationProperties instance;
 
     private ApplicationProperties() {
@@ -24,29 +26,34 @@ public class ApplicationProperties {
         return instance;
     }
 
-    public String getDbUrl() {
-        dbUrl = properties.getProperty("db.url");
-        return dbUrl;
+    public String getUrl() {
+        url = properties.getProperty("url");
+        return url;
     }
 
-    public String getDbUser() {
-        dbUser = properties.getProperty("db.user");
-        return dbUser;
+    public String getDb() {
+        db = properties.getProperty("db");
+        return db;
     }
 
-    public String getDbPassword() {
-        dbPassword = properties.getProperty("db.password");
-        return dbPassword;
+    public String getUser() {
+        user = properties.getProperty("user");
+        return user;
     }
 
-    public int getDbInitPoolSize() {
-        dbInitPoolSize = Integer.parseInt(properties.getProperty("db.initpoolsize"));
-        return dbInitPoolSize;
+    public String getPassword() {
+        password = properties.getProperty("password");
+        return password;
     }
 
-    public int getDbMaxPoolSize() {
-        dbMaxPoolSize = Integer.parseInt(properties.getProperty("db.maxpoolsize"));
-        return dbMaxPoolSize;
+    public int getInitPoolSize() {
+        initPoolSize = Integer.parseInt(properties.getProperty("initpoolsize"));
+        return initPoolSize;
+    }
+
+    public int getMaxPoolSize() {
+        maxPoolSize = Integer.parseInt(properties.getProperty("maxpoolsize"));
+        return maxPoolSize;
     }
 
 }
